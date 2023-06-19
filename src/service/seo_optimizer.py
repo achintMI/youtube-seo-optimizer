@@ -6,8 +6,6 @@ from openapi_schema_to_json_schema import to_json_schema
 import openai
 
 
-
-
 def get_chat_completion(messages, model="gpt-3.5-turbo-0613", ):
     response = openai.ChatCompletion.create(model=model, messages=messages)
     return response
@@ -27,14 +25,17 @@ def get_SEO_optiomized_data(text):
         },
         {"role": "user", "content": text},
     ]
-    chat_completion = get_chat_completion(messages)
-    if not chat_completion["choices"]:
-        logger.error(f'choice field not present in gpt response{chat_completion}')
-        raise Exception("Invalid gpt response")
+    try:
+        chat_completion = get_chat_completion(messages)
+    except Exception as e:
+        raise Exception('Invalid gpt response')
+    if "choices" not in chat_completion:
+        logger.error(f'choice field not present in gpt response: {chat_completion}')
+        raise Exception("choices field not present in gpt response")
     data = chat_completion["choices"][0]
     json_data = to_json_schema(data)
-    if not json_data["message"] or not json_data["message"]["content"]:
-        logger.error(f'message or content field not present in gpt response{chat_completion}')
-        raise Exception("Invalid gpt response")
+    if "message" not in json_data or "content" not in json_data["message"]:
+        logger.error(f'message or content field not present in gpt response: {chat_completion}')
+        raise Exception("message or content field not present in gpt response")
     content = json_data["message"]["content"]
     return json.loads(content)
