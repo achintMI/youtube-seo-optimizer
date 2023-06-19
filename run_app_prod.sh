@@ -1,2 +1,2 @@
 #!/bin/bash
-uwsgi --ini app.ini --need-app
+uwsgi app.ini
