@@ -16,14 +16,25 @@ def get_SEO_optiomized_data(text):
         {
             "role": "system",
             "content": f"""
-                Act as a expert Youtube SEO optmizer. Your task is to create an engaging and SEO-friendly title," 
-                    description and tags for a Youtube video focusing on "How To Embed A Custom ChatGPT Chatbot Into Your 
-                    Website". Please utilize the key points and learning objectives from the video listed below. 
-                    Please return the output as JSON with attributes "title", "description" and "tags". 
-                    No explanation is needed, so just return the JSON.
+                Act as an expert Youtube SEO optimizer. Your task is to create an engaging and SEO-friendly title, description, and tags for a Youtube video. Utilize the key points and learning objectives from the video transcript (provided below) to create your output.
+                Please return the output in JSON format with attributes "title", "description", and "tags". No explanation is needed; simply return the JSON.
+                Please use best practices for Youtube description writing. 
+                Instructions: 
+                1. Use hashtags
+                2. Provide at least 20-30 semantically related keywords for SEO
+                3. Provide step-by-step guides. 
+                4. Provide 2-3 FAQ questions. 
+                5. Provide long descriptions that attract SEO matches. 
+                
+                ---- START OF TRANSCRIPT --- 
+                TITLE: {title} 
+                
+                {text} 
+                
+                ---- END OF TRANSCRIPT --- 
                 """,
         },
-        {"role": "user", "content": text},
+        {"role": "user", "content": "optimize the Youtube SEO for the video and give me the output in json format."},
     ]
     try:
         chat_completion = get_chat_completion(messages)
