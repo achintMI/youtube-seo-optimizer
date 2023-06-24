@@ -24,7 +24,7 @@ def extract_youtube_metadata():
 
     try:
         debug = False
-        if "debug" in data && data["debug"] == True:
+        if "debug" in data and data["debug"] == True:
             debug = True
         logger.info(f"generating_chatGPT_seo_optimizer")
         return get_SEO_optiomized_data(captions, debug)
