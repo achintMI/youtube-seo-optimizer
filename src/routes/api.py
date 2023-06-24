@@ -23,7 +23,10 @@ def extract_youtube_metadata():
         abort(400, "captions generate from URL error " + str(e))
 
     try:
+        debug = False
+        if "debug" in data && data["debug"] == True:
+            debug = True
         logger.info(f"generating_chatGPT_seo_optimizer")
-        return get_SEO_optiomized_data(captions)
+        return get_SEO_optiomized_data(captions, debug)
     except Exception as e:
         abort(400, "chat gpt response generate error: " + str(e))
