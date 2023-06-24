@@ -1,7 +1,7 @@
 import os
 import re
 import requests
-from pytube import extract
+from pytube import extract, YouTube
 import youtube_transcript_api
 
 # from app.pages.services.utils.utils import get_content_from_scraping_bee
@@ -66,6 +66,10 @@ def youtube_extractor(video_id):
         response_text = YouTubeTranscriptApi.get_transcript(video_id, languages=transcript_list)
         text_list = [d['text'] for d in response_text]
         captions = ' '.join(text_list)
+
+        yt = YouTube(f"https://www.youtube.com/watch?v={video_id}")
+        title = yt.title
+
     except (youtube_transcript_api._errors.NoTranscriptFound):
         os.environ.pop('HTTPS_PROXY', None)
         raise Exception(f"No transcript found for {video_id}")
@@ -74,7 +78,7 @@ def youtube_extractor(video_id):
         raise e
     else:
         os.environ.pop('HTTPS_PROXY', None)
-        return captions
+        return {'captions': captions, 'title': title}
 
 
 def get_vimeo_headers():
@@ -102,13 +106,17 @@ def vimeo_extractor(video_id):
                 captions_response = requests.get(link, headers=headers)
                 if captions_response.status_code == 200:
                     captions += captions_response.text
+            # extract title
+            video_response = requests.get(f"https://api.vimeo.com/videos/{video_id}", headers=headers)
+            title = video_response.json().get('name')
+
     except Exception as e:
         raise Exception(f"No transcript found for {video_id}")
     else:
         pattern = re.compile(r"\d+:\d+\.\d+\s--> \d+:\d+\.\d+")
         clean_text = re.sub(pattern, "", captions).replace('\n\n\n', ' ').replace('\n', ' ').lstrip(
             'WEBVTT').strip().lstrip('-').strip()
-        return clean_text
+        return {'captions': clean_text, 'title': title}
 
 
 # def get_video_title(video_url):
