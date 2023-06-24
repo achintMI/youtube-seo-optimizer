@@ -6,12 +6,12 @@ from openapi_schema_to_json_schema import to_json_schema
 import openai
 
 
-def get_chat_completion(messages, model="gpt-3.5-turbo-0613", ):
+def get_chat_completion(messages, model="gpt-3.5-turbo", ):
     response = openai.ChatCompletion.create(model=model, messages=messages)
     return response
 
 
-def get_SEO_optiomized_data(text):
+def get_SEO_optiomized_data(content):
     messages = [
         {
             "role": "system",
@@ -25,12 +25,12 @@ def get_SEO_optiomized_data(text):
                 3. Provide step-by-step guides. 
                 4. Provide 2-3 FAQ questions. 
                 5. Provide long descriptions that attract SEO matches. 
-                
+
                 ---- START OF TRANSCRIPT --- 
-                TITLE: {title} 
-                
-                {text} 
-                
+                TITLE: {content['title']} 
+
+                {content['captions']} 
+
                 ---- END OF TRANSCRIPT --- 
                 """,
         },
