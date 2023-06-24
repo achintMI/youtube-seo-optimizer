@@ -24,7 +24,8 @@ def get_SEO_optiomized_data(content):
                 2. Provide at least 20-30 semantically related keywords for SEO
                 3. Provide step-by-step guides. 
                 4. Provide 2-3 FAQ questions. 
-                5. Provide long descriptions that attract SEO matches. 
+                5. Provide long descriptions that attract SEO matches.
+                6. Response tags should contain an array of strings 
 
                 ---- START OF TRANSCRIPT --- 
                 TITLE: {content['title']} 
