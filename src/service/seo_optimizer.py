@@ -25,7 +25,7 @@ def get_SEO_optiomized_data(content):
                 3. Provide step-by-step guides. 
                 4. Provide 2-3 FAQ questions. 
                 5. Provide long descriptions that attract SEO matches.
-                6. Response tags should contain an array of strings 
+                6. tags should be comma seprated strings
 
                 ---- START OF TRANSCRIPT --- 
                 TITLE: {content['title']} 
