@@ -12,6 +12,10 @@ def get_chat_completion(messages, model="gpt-3.5-turbo", ):
 
 
 def get_SEO_optiomized_data(content, debug=False):
+    if 'title' not in content:
+        content['title'] = ""
+    if 'captions' not in content:
+        content['captions'] = ""
     messages = [
         {
             "role": "system",
@@ -50,7 +54,7 @@ def get_SEO_optiomized_data(content, debug=False):
         logger.error(f'message or content field not present in gpt response: {chat_completion}')
         raise Exception("message or content field not present in gpt response")
     content = json_data["message"]["content"]
-    
+
     resp = json.loads(content)
     if debug:
         resp = {"request": messages, "response": resp}

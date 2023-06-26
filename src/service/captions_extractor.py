@@ -58,6 +58,7 @@ def youtube_extractor(video_id):
 
     :param video_id: The ID of the video you want to get the captions for
     """
+    response = {}
     try:
         # os.environ['HTTPS_PROXY'] = "http://user-default:CrmnTTX6Xva1@resi.proxiware.com:8080"
         transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
@@ -67,18 +68,24 @@ def youtube_extractor(video_id):
         text_list = [d['text'] for d in response_text]
         captions = ' '.join(text_list)
 
-        yt = YouTube(f"https://www.youtube.com/watch?v={video_id}")
-        title = yt.title
+        response["captions"] = captions
 
-    except (youtube_transcript_api._errors.NoTranscriptFound):
-        os.environ.pop('HTTPS_PROXY', None)
-        raise Exception(f"No transcript found for {video_id}")
     except Exception as e:
         os.environ.pop('HTTPS_PROXY', None)
-        raise e
+        pass
     else:
         os.environ.pop('HTTPS_PROXY', None)
-        return {'captions': captions, 'title': title}
+
+    try:
+        yt = YouTube(f"https://www.youtube.com/watch?v={video_id}")
+        response['title'] = yt.title
+    except Exception as e:
+        pass
+
+    if "captions" not in response and "title" not in response:
+        raise Exception(f'Failed to fetch youtube title and transcriptions')
+
+    return response
 
 
 def get_vimeo_headers():
